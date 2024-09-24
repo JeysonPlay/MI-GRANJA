@@ -1,139 +1,334 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Granja</title>
     <style>
+        :root {
+          --primary-color: #e74c3c;
+          --secondary-color: #2c3e50;
+          --text-color: #ecf0f1;
+          --hover-color: #c0392b;
+          --transition-speed: 0.3s;
+          --sidebar-bg-color: #34495e;
+          --content-bg-color: #f8f9fa;
+        }
+      
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+      
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9; 
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            position: relative;
+          font-family: 'Roboto', sans-serif;
+          background-color: var(--content-bg-color);
+          line-height: 1.8;
+          color: #333;
         }
+      
         .top-bar {
-            width: 100%;
-            background-color: #f44336; 
-            color: black; 
-            padding: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: flex-start; 
-            align-items: center;
+          background-color: var(--primary-color);
+          color: var(--text-color);
+          padding: 15px 25px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
+      
+        .menu-toggle {
+          background: none;
+          border: none;
+          color: var(--text-color);
+          font-size: 24px;
+          cursor: pointer;
+          transition: transform var(--transition-speed);
+        }
+      
+        .menu-toggle:hover {
+          transform: scale(1.1);
+        }
+      
         .sidebar {
-            width: 200px;
-            background-color: white; 
-            color: black; 
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-            position: fixed; 
-            top: 0;
-            left: -200px; 
-            height: 100%; 
-            transition: left 0.3s;
-            z-index: 1001; 
+          position: fixed;
+          left: -280px;
+          top: 0;
+          width: 280px;
+          height: 100vh;
+          background-color: var(--sidebar-bg-color);
+          color: var(--text-color);
+          padding: 20px;
+          transition: all var(--transition-speed) ease;
+          z-index: 1000;
+          box-shadow: 2px 0 5px rgba(0,0,0,0.1);
         }
-        .sidebar .top-section {
-            background-color: #f44336; 
+      
+        .sidebar.active {
+          left: 0;
         }
-        .sidebar h2 {
-            margin: 0;
-            font-size: 24px; 
-            font-weight: bold; 
-            margin-left: 20px; 
-            padding: 15px; 
-            color: white; 
+      
+        .sidebar-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 30px;
+          padding-bottom: 20px;
+          border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        .sidebar a {
-            color: black; 
-            text-decoration: none;
-            display: block;
-            padding: 12px 20px; 
-            transition: background-color 0.3s;
+      
+        .sidebar-header h1 {
+          font-size: 28px;
+          font-weight: 700;
         }
-        .sidebar a:hover {
-            background-color: #e53935; 
+      
+        .close-btn {
+          background: none;
+          border: none;
+          color: var(--text-color);
+          font-size: 24px;
+          cursor: pointer;
+          transition: transform var(--transition-speed);
         }
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); 
-            display: none; 
-            z-index: 1000; 
+      
+        .close-btn:hover {
+          transform: scale(1.1);
         }
-        .container {
-            text-align: center;
-            padding: 40px; 
-            flex: 1; 
+      
+        .sidebar-nav {
+          list-style-type: none;
         }
+      
+        .sidebar-nav li {
+          margin-bottom: 15px;
+        }
+      
+        .sidebar-nav a {
+          color: var(--text-color);
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+          padding: 12px 15px;
+          border-radius: 8px;
+          transition: all var(--transition-speed) ease;
+        }
+      
+        .sidebar-nav a:hover {
+          background-color: var(--hover-color);
+          transform: translateX(5px);
+        }
+      
+        .sidebar-nav i {
+          margin-right: 15px;
+          font-size: 20px;
+        }
+      
         .content {
-            max-width: 800px; 
-            margin: 0 auto; 
-            padding: 0 20px; 
+          padding: 40px;
+          margin-left: 0;
+          transition: margin-left var(--transition-speed) ease;
+          max-width: 900px;
+          margin: 0 auto;
+          text-align: center;
         }
+      
+        .content.active {
+          margin-left: 280px;
+        }
+      
+        @media (max-width: 768px) {
+          .content.active {
+            margin-left: 0;
+          }
+        }
+      
+        .download-btn {
+          display: inline-block;
+          padding: 12px 25px;
+          background-color: var(--primary-color);
+          color: var(--text-color);
+          text-decoration: none;
+          border-radius: 25px;
+          transition: all var(--transition-speed) ease;
+          font-weight: 600;
+          margin-top: 20px;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+      
+        .download-btn:hover {
+          background-color: var(--hover-color);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+      
+        h1, h2, h3 {
+          margin-bottom: 20px;
+          color: var(--primary-color);
+        }
+      
         h1 {
-            color: #333; 
-            font-size: 36px; 
-            margin-bottom: 20px; /* Aumentar margen inferior */
+          font-size: 2.5em;
+          font-weight: 700;
         }
+      
+        h2 {
+          font-size: 2em;
+        }
+      
+        h3 {
+          font-size: 1.5em;
+        }
+      
         p {
-            color: #555; 
-            margin-bottom: 30px; /* Aumentar margen inferior */
-            line-height: 1.6; 
+          margin-bottom: 20px;
         }
-        .menu-button {
-            background-color: #f44336; 
-            color: white; 
-            font-weight: bold; 
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 1002; 
-            margin-left: 260px; 
+      
+        .content-section {
+          background-color: #ffffff;
+          border-radius: 10px;
+          padding: 30px;
+          margin-bottom: 30px;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+          transition: all var(--transition-speed) ease;
         }
-    </style>
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.querySelector('.sidebar');
-            const overlay = document.querySelector('.overlay');
-            if (sidebar.style.left === '-200px') {
-                sidebar.style.left = '0px'; 
-                overlay.style.display = 'block'; 
-            } else {
-                sidebar.style.left = '-200px'; 
-                overlay.style.display = 'none'; 
+      
+        .content-section:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+      
+        ol {
+          text-align: left;
+          padding-left: 30px;
+          margin-bottom: 20px;
+        }
+      
+        .fade-in {
+          animation: fadeIn 0.5s ease-in;
+        }
+      
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+      </style>
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+      </head>
+      <body>
+        <div class="top-bar">
+          <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      
+        <nav class="sidebar" id="sidebar">
+          <div class="sidebar-header">
+            <h1>Mi Granja</h1>
+            <button class="close-btn" id="closeBtn">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <ul class="sidebar-nav">
+            <li><a href="#inicio"><i class="fas fa-home"></i>Inicio</a></li>
+            <li><a href="#descargar"><i class="fas fa-download"></i>Descargar</a></li>
+            <li><a href="#sobre-nosotros"><i class="fas fa-info-circle"></i>Sobre Nosotros</a></li>
+          </ul>
+        </nav>
+      
+        <main class="content" id="content">
+          <!-- El contenido se cargará dinámicamente aquí -->
+        </main>
+      
+      <script>
+      document.addEventListener('DOMContentLoaded', (event) => {
+        const menuToggle = document.getElementById('menuToggle');
+        const closeBtn = document.getElementById('closeBtn');
+        const sidebar = document.getElementById('sidebar');
+        const content = document.getElementById('content');
+      
+        menuToggle.addEventListener('click', () => {
+          sidebar.classList.add('active');
+          content.classList.add('active');
+        });
+      
+        closeBtn.addEventListener('click', () => {
+          sidebar.classList.remove('active');
+          content.classList.remove('active');
+        });
+      
+        const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+        
+        function loadContent(section) {
+          content.innerHTML = '';
+          content.classList.remove('fade-in');
+          
+          let newContent = document.createElement('div');
+          newContent.classList.add('content-section', 'fade-in');
+      
+          switch(section) {
+            case 'inicio':
+              newContent.innerHTML = `
+                <h1>Bienvenidos a Mi Granja</h1>
+                <p>Mi Granja es una aplicación diseñada para ayudar a las personas, ya sea del campo o aquellos que simplemente disfrutan de la jardinería, a obtener información detallada sobre el cuidado y la siembra de semillas.</p>
+                <p>La falta de conocimiento sobre los cuidados necesarios y las condiciones adecuadas para sembrar puede llevar a resultados insatisfactorios, y esta herramienta busca solucionar ese problema.</p>
+                <p>Con Mi Granja, puedes acceder fácilmente a información sobre legumbres, frutas y verduras, y aprender todo lo que necesitas para tener cultivos exitosos.</p>
+                <p>¡Gracias por visitarnos, esperamos que Mi Granja te sea de gran utilidad!</p>
+              `;
+              break;
+            case 'descargar':
+              newContent.innerHTML = `
+                <h2>Descarga Mi Granja</h2>
+                <p>¿Listo para empezar a mejorar tus cultivos? Descarga nuestra aplicación directamente desde aquí:</p>
+                <a href="https://github.com/JeysonPlay/Mi-Granja/raw/refs/heads/main/MI-GRANJA.apk" class="download-btn">Descargar APK</a>
+                <br><br>
+                <h3>Instrucciones de instalación</h3>
+                <ol>
+                  <li>Descarga el archivo APK en tu dispositivo Android.</li>
+                  <li>Abre el archivo descargado y sigue las instrucciones en pantalla.</li>
+                  <li>¡Listo! Ahora puedes explorar todo lo que Mi Granja tiene para ofrecerte.</li>
+                </ol>
+              `;
+              break;
+            case 'sobre-nosotros':
+              newContent.innerHTML = `
+                <h1>Acerca de Mi Granja</h1>
+                <p>Mi nombre es Jeyson Andres Sanchez Correa, soy estudiante de Ingeniería de Sistemas en mi sexto semestre, y este proyecto fue desarrollado como parte de la materia Proyecto de Ingeniería 2 en mi universidad.</p>
+                <p>El principal objetivo de Mi Granja es proporcionar una solución accesible para cualquier persona interesada en sembrar, facilitando el acceso a información sobre los cuidados, clima adecuado, y otros aspectos necesarios para que las semillas crezcan con éxito.</p>
+                <p>Este proyecto nace de la necesidad de mejorar el acceso a la información agrícola, especialmente para las personas del campo que no cuentan con herramientas tecnológicas avanzadas. Espero que esta aplicación sea de ayuda y contribuya al éxito de tus cultivos.</p>
+                <p>En el futuro, planeo agregar más funciones y expandir el contenido para incluir más tipos de semillas y consejos personalizados.</p>
+              `;
+              break;
+          }
+          
+          content.appendChild(newContent);
+          setTimeout(() => content.classList.add('fade-in'), 50);
+        }
+      
+        sidebarLinks.forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            sidebarLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            
+            const section = link.getAttribute('href').substring(1);
+            loadContent(section);
+      
+            if (window.innerWidth <= 768) {
+              sidebar.classList.remove('active');
+              content.classList.remove('active');
             }
-        }
-    </script>
-</head>
-<body>
-
-    <div class="top-bar">
-        <button class="menu-button" onclick="toggleSidebar()">☰ Menu</button>
-    </div>
-
-    <div class="sidebar">
-        <div class="top-section">
-            <h2>Mi Granja</h2>
-        </div>
-        <a href="index.html">Inicio</a>
-        <a href="descargar.html">Descargar</a>
-    </div>
-
-    <div class="overlay" onclick="toggleSidebar()"></div>
-
-    <div class="container">
-        <div class="content">
-            <h1>Bienvenida a Mi Granja</h1>
-            <p>Bienvenidos a nuestra página web dedicada a mejorar la agricultura. Aquí encontrarás información valiosa para sembrar y cuidar tus cultivos. Descubre nuestra aplicación, diseñada especialmente para aquellos que buscan guías prácticas sobre legumbres, frutas y verduras.</p>
-        </div>
-    </div>
-
-</body>
-</html>
+          });
+        });
+      
+        document.addEventListener('click', (e) => {
+          if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+            sidebar.classList.remove('active');
+            content.classList.remove('active');
+          }
+        });
+      
+        // Cargar el contenido inicial
+        loadContent('inicio');
+      });
+      </script>
+      </body>
+      </html>
