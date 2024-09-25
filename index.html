@@ -1,379 +1,257 @@
-<!DOCTYPE html>
-<html lang="es">
-    <style>
-        :root {
-          --primary-color: #e74c3c;
-          --secondary-color: #2c3e50;
-          --text-color: #ecf0f1;
-          --hover-color: #c0392b;
-          --transition-speed: 0.3s;
-          --sidebar-bg-color: #34495e;
-          --content-bg-color: #f8f9fa;
-          --title-color: #000000;
-        }
-      
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-      
-        body {
-          font-family: 'Roboto', sans-serif;
-          background-color: var(--content-bg-color);
-          line-height: 1.6;
-          color: #333;
-          font-size: 16px;
-          overflow-x: hidden;
-        }
-      
-        .top-bar {
-          background-color: var(--primary-color);
-          color: var(--text-color);
-          padding: 12px 20px;
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          z-index: 1000;
-        }
-      
-        .menu-toggle {
-          background: none;
-          border: none;
-          color: var(--text-color);
-          font-size: 24px;
-          cursor: pointer;
-          transition: transform var(--transition-speed);
-        }
-      
-        .menu-toggle:hover {
-          transform: scale(1.1);
-        }
-      
-        .sidebar {
-          position: fixed;
-          left: -100%;
-          top: 0;
-          width: 80%;
-          max-width: 300px;
-          height: 100vh;
-          background-color: var(--sidebar-bg-color);
-          color: var(--text-color);
-          padding: 20px;
-          transition: all var(--transition-speed) ease;
-          z-index: 1001;
-          box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-          overflow-y: auto;
-        }
-      
-        .sidebar.active {
-          left: 0;
-        }
-      
-        .sidebar-header {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin-bottom: 20px;
-          padding-bottom: 15px;
-          border-bottom: 1px solid rgba(255,255,255,0.1);
-          position: relative;
-        }
-      
-        .sidebar-header h1 {
-          font-size: 24px;
-          font-weight: 700;
-          color: var(--primary-color);
-        }
-      
-        .close-btn {
-          background: none;
-          border: none;
-          color: var(--text-color);
-          font-size: 24px;
-          cursor: pointer;
-          transition: transform var(--transition-speed);
-          position: absolute;
-          right: 0;
-        }
-      
-        .close-btn:hover {
-          transform: scale(1.1);
-        }
-      
-        .sidebar-nav {
-          list-style-type: none;
-        }
-      
-        .sidebar-nav li {
-          margin-bottom: 10px;
-        }
-      
-        .sidebar-nav a {
-          color: var(--text-color);
-          text-decoration: none;
-          display: flex;
-          align-items: center;
-          padding: 10px;
-          border-radius: 8px;
-          transition: all var(--transition-speed) ease;
-        }
-      
-        .sidebar-nav a:hover {
-          background-color: var(--hover-color);
-        }
-      
-        .sidebar-nav i {
-          margin-right: 15px;
-          font-size: 18px;
-        }
-      
-        .content {
-          padding: 20px;
-          padding-top: 70px;
-          transition: margin-left var(--transition-speed) ease;
-          max-width: 100%;
-          margin: 0 auto;
-          text-align: center;
-        }
-      
-        .download-btn {
-          display: inline-block;
-          padding: 12px 25px;
-          background-color: var(--primary-color);
-          color: var(--text-color);
-          text-decoration: none;
-          border-radius: 25px;
-          transition: all var(--transition-speed) ease;
-          font-weight: 600;
-          margin-top: 20px;
-          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-      
-        .download-btn:hover {
-          background-color: var(--hover-color);
-          transform: translateY(-2px);
-          box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-        }
-      
-        h1, h2, h3 {
-          margin-bottom: 15px;
-          color: var(--title-color);
-        }
-      
-        h1 {
-          font-size: 2em;
-          font-weight: 700;
-        }
-      
-        h2 {
-          font-size: 1.7em;
-        }
-      
-        h3 {
-          font-size: 1.4em;
-        }
-      
-        p {
-          margin-bottom: 15px;
-        }
-      
-        .content-section {
-          background-color: #ffffff;
-          border-radius: 10px;
-          padding: 20px;
-          margin-bottom: 20px;
-          box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-      
-        ol {
-          text-align: center;
-          padding-left: 0;
-          list-style-position: inside;
-          margin-bottom: 15px;
-        }
-      
-        .fade-in {
-          animation: fadeIn 0.5s ease-in;
-        }
-      
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-      
-        @media (max-width: 768px) {
-          body {
-            font-size: 14px;
-          }
-      
-          .content {
-            padding: 15px;
-            padding-top: 60px;
-          }
-      
-          h1 {
-            font-size: 1.8em;
-          }
-      
-          h2 {
-            font-size: 1.5em;
-          }
-      
-          h3 {
-            font-size: 1.3em;
-          }
-      
-          .download-btn {
-            padding: 10px 20px;
-            font-size: 14px;
-          }
-      
-          .sidebar {
-            width: 100%;
-            max-width: none;
-          }
-      
-          .sidebar-header h1 {
-            font-size: 20px;
-          }
-      
-          .sidebar-nav a {
-            padding: 12px;
-          }
-      
-          .sidebar-nav i {
-            font-size: 16px;
-          }
-      
-          .content-section {
-            padding: 15px;
-          }
-      
-          ol {
-            padding-left: 20px;
-          }
-        }
-      </style>
-      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-      </head>
-      <body>
-        <div class="top-bar">
-          <button class="menu-toggle" id="menuToggle">
-            <i class="fas fa-bars"></i>
-          </button>
-        </div>
-      
-        <nav class="sidebar" id="sidebar">
-          <div class="sidebar-header">
-            <h1>Mi Granja</h1>
-            <button class="close-btn" id="closeBtn">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-          <ul class="sidebar-nav">
-            <li><a href="#inicio"><i class="fas fa-home"></i>Inicio</a></li>
-            <li><a href="#descargar"><i class="fas fa-download"></i>Descargar</a></li>
-            <li><a href="#sobre-nosotros"><i class="fas fa-info-circle"></i>Sobre Nosotros</a></li>
-          </ul>
-        </nav>
-      
-        <main class="content" id="content">
-          <!-- El contenido se cargará dinámicamente aquí -->
-        </main>
-      
-      <script>
-      document.addEventListener('DOMContentLoaded', (event) => {
-        const menuToggle = document.getElementById('menuToggle');
-        const closeBtn = document.getElementById('closeBtn');
-        const sidebar = document.getElementById('sidebar');
-        const content = document.getElementById('content');
-      
-        function toggleSidebar() {
-          sidebar.classList.toggle('active');
-          document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
-        }
-      
-        menuToggle.addEventListener('click', toggleSidebar);
-        closeBtn.addEventListener('click', toggleSidebar);
-      
-        const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
-        
-        function loadContent(section) {
-          content.innerHTML = '';
-          content.classList.remove('fade-in');
-          
-          let newContent = document.createElement('div');
-          newContent.classList.add('content-section', 'fade-in');
-      
-          switch(section) {
-            case 'inicio':
-              newContent.innerHTML = `
-                <h1>Bienvenidos a Mi Granja</h1>
-                <p>Mi Granja es una aplicación diseñada para ayudar a las personas, ya sea del campo o aquellos que simplemente disfrutan de la jardinería, a obtener información detallada sobre el cuidado y la siembra de semillas.</p>
-                <p>La falta de conocimiento sobre los cuidados necesarios y las condiciones adecuadas para sembrar puede llevar a resultados insatisfactorios, y esta herramienta busca solucionar ese problema.</p>
-                <p>Con Mi Granja, puedes acceder fácilmente a información sobre legumbres, frutas y verduras, y aprender todo lo que necesitas para tener cultivos exitosos.</p>
-                <p>¡Gracias por visitarnos, esperamos que Mi Granja te sea de gran utilidad!</p>
-              `;
-              break;
-            case 'descargar':
-              newContent.innerHTML = `
-                <h2>Descarga Mi Granja</h2>
-                <p>¿Listo para empezar a mejorar tus cultivos? Descarga nuestra aplicación directamente desde aquí:</p>
-                <a href="https://github.com/JeysonPlay/Mi-Granja/raw/refs/heads/main/MI-GRANJA.apk" class="download-btn">Descargar APK</a>
-                <h3></h3>
-                <h3>Instrucciones de instalación</h3>
-                <ol>
-                  <li>Descarga el archivo APK en tu dispositivo Android.</li>
-                  <li>Abre el archivo descargado y sigue las instrucciones en pantalla.</li>
-                  <li>¡Listo! Ahora puedes explorar todo lo que Mi Granja tiene para ofrecerte.</li>
-                </ol>
-              `;
-              break;
-            case 'sobre-nosotros':
-              newContent.innerHTML = `
-                <h1>Acerca de Mi Granja</h1>
-                <p>Mi nombre es Jeyson Andres Sanchez Correa, soy estudiante de Ingeniería de Sistemas en mi sexto semestre, y este proyecto fue desarrollado como parte de la materia Proyecto de Ingeniería 2 en mi universidad.</p>
-                <p>El principal objetivo de Mi Granja es proporcionar una solución accesible para cualquier persona interesada en sembrar, facilitando el acceso a información sobre los cuidados, clima adecuado, y otros aspectos necesarios para que las semillas crezcan con éxito.</p>
-                <p>Este proyecto nace de la necesidad de mejorar el acceso a la información agrícola, especialmente para las personas del campo que no cuentan con herramientas tecnológicas avanzadas. Espero que esta aplicación sea de ayuda y contribuya al éxito de tus cultivos.</p>
-                <p>En el futuro, planeo agregar más funciones y expandir el contenido para incluir más tipos de semillas y consejos personalizados.</p>
-              `;
-              break;
-          }
-          
-          content.appendChild(newContent);
-          setTimeout(() => content.classList.add('fade-in'), 50);
-        }
-      
-        sidebarLinks.forEach(link => {
-          link.addEventListener('click', (e) => {
-            e.preventDefault();
-            
-            sidebarLinks.forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
-            
-            const section = link.getAttribute('href').substring(1);
-            loadContent(section);
-      
-            toggleSidebar();
-          });
-        });
-      
-        document.addEventListener('click', (e) => {
-          if (sidebar.classList.contains('active') && !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
-            toggleSidebar();
-          }
-        });
-      
-        // Cargar el contenido inicial
-        loadContent('inicio');
-      });
-      </script>
-      </body>
-      </html>
+<html><head><base href="https://websim.creation.engine/ultra-modern-website/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Granja - Interfaz Moderna con Pestañas</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root {
+    --primary-color: #4CAF50;
+    --secondary-color: #8BC34A;
+    --text-color: #2d3436;
+    --background-color: #E8F5E9;
+    --card-color: rgba(255, 255, 255, 0.9);
+  }
+
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  .background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(45deg, #4CAF50, #8BC34A);
+  }
+
+  .particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  header {
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 1rem 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  nav a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    margin: 0 1rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  nav a:hover, nav a.active {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-3px);
+  }
+
+  main {
+    max-width: 1200px;
+    margin: 100px auto 0;
+    padding: 2rem;
+  }
+
+  .tab-content {
+    background-color: var(--card-color);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  h1, h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+  }
+
+  .icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--secondary-color);
+  }
+
+  .btn {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .android-note {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 1rem;
+  }
+
+  .social-links {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .social-links a {
+    color: var(--primary-color);
+    font-size: 2rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+
+  .social-links a:hover {
+    color: var(--secondary-color);
+    transform: scale(1.1);
+  }
+</style>
+</head>
+<body>
+  <div class="background">
+    <div class="particles" id="particles-js"></div>
+  </div>
+
+  <header>
+    <nav>
+      <a onclick="showTab('inicio')" id="nav-inicio"><i class="fas fa-home"></i> Inicio</a>
+      <a onclick="showTab('descargar')" id="nav-descargar"><i class="fas fa-download"></i> Descargar</a>
+      <a onclick="showTab('sobre-nosotros')" id="nav-sobre-nosotros"><i class="fas fa-users"></i> Sobre Nosotros</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="tab-content" id="inicio">
+      <i class="icon fas fa-seedling"></i>
+      <h1>Bienvenidos a Mi Granja</h1>
+      <p>Mi Granja es una aplicación diseñada para ayudar a las personas, ya sea del campo o aquellos que simplemente disfrutan de la jardinería, a obtener información detallada sobre el cuidado y la siembra de semillas.</p>
+      <p>La falta de conocimiento sobre los cuidados necesarios y las condiciones adecuadas para sembrar puede llevar a resultados insatisfactorios, y esta herramienta busca solucionar ese problema.</p>
+      <p>Con Mi Granja, puedes acceder fácilmente a información sobre:</p>
+      <ul>
+        <li>Legumbres</li>
+        <li>Frutas</li>
+        <li>Verduras</li>
+      </ul>
+      <p>Aprende todo lo que necesitas para tener cultivos exitosos y disfruta de una experiencia de jardinería más informada y satisfactoria.</p>
+      <p>¡Gracias por visitarnos, esperamos que Mi Granja te sea de gran utilidad!</p>
+    </div>
+
+    <div class="tab-content" id="descargar">
+      <i class="icon fas fa-mobile-alt"></i>
+      <h2>Descarga Mi Granja</h2>
+      <p>Lleva tu asistente de jardinería contigo a todas partes. Descarga nuestra app y comienza tu aventura agrícola.</p>
+      <a href="https://github.com/JeysonPlay/Mi-Granja/raw/refs/heads/main/MI-GRANJA.apk" class="btn">Descargar para Android</a>
+      <p class="android-note">Nota: Esta aplicación solo está disponible para dispositivos Android.</p>
+      <h3>Instrucciones de instalación:</h3>
+      <ol>
+        <li>Descarga el archivo APK haciendo clic en el botón de arriba.</li>
+        <li>Abre el archivo descargado en tu dispositivo Android.</li>
+        <li>Si es necesario, permite la instalación de aplicaciones de fuentes desconocidas en la configuración de tu dispositivo.</li>
+        <li>Sigue las instrucciones en pantalla para completar la instalación.</li>
+        <li>Una vez instalada, abre la aplicación y comienza a explorar la información sobre tus cultivos favoritos.</li>
+      </ol>
+      <p>Si tienes problemas con la descarga o la instalación, no dudes en contactarnos para obtener ayuda.</p>
+    </div>
+
+    <div class="tab-content" id="sobre-nosotros">
+      <i class="icon fas fa-leaf"></i>
+      <h2>Acerca de Mi Granja</h2>
+      <p>Mi nombre es Jeyson Andres Sanchez Correa, soy estudiante de Ingeniería de Sistemas en mi sexto semestre, y este proyecto fue desarrollado como parte de la materia Proyecto de Ingeniería 2 en mi universidad.</p>
+      <p>El principal objetivo de Mi Granja es proporcionar una solución accesible para cualquier persona interesada en sembrar, facilitando el acceso a información sobre los cuidados, clima adecuado, y otros aspectos necesarios para que las semillas crezcan con éxito.</p>
+      <p>Este proyecto nace de la necesidad de mejorar el acceso a la información agrícola, especialmente para las personas del campo que no cuentan con herramientas tecnológicas avanzadas. Espero que esta aplicación sea de ayuda y contribuya al éxito de tus cultivos.</p>
+      <p>En el futuro, planeo agregar más funciones y expandir el contenido para incluir más tipos de semillas y consejos personalizados.</p>
+      <div class="social-links">
+        <a href="https://github.com/JeysonPlay" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://www.youtube.com/@jeysonplay" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.instagram.com/jeysonplay_/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@jeysonplay" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        <a href="https://kick.com/jeysonplay" target="_blank" title="Kick"><i class="fas fa-broadcast-tower"></i></a>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 80, density: { enable: true, value_area: 800 } },
+        color: { value: "#ffffff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5, random: false },
+        size: { value: 3, random: true },
+        line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
+        move: { enable: true, speed: 6, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true },
+        modes: { grab: { distance: 400, line_linked: { opacity: 1 } }, bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 }, repulse: { distance: 200, duration: 0.4 }, push: { particles_nb: 4 }, remove: { particles_nb: 2 } }
+      },
+      retina_detect: true
+    });
+
+    function showTab(tabId) {
+      const tabs = document.querySelectorAll('.tab-content');
+      const navItems = document.querySelectorAll('nav a');
+
+      tabs.forEach(tab => tab.classList.remove('active'));
+      navItems.forEach(item => item.classList.remove('active'));
+
+      document.getElementById(tabId).classList.add('active');
+      document.getElementById('nav-' + tabId).classList.add('active');
+    }
+
+    // Show the "Inicio" tab by default
+    showTab('inicio');
+  </script>
+</body></html>
